@@ -19,7 +19,7 @@ int main()
     return 0;
 }
 
------ Second part -----------
+//----- Second part -----------//
 
 // Exercise 4.6
 #include "std_lib_facilities.h"
