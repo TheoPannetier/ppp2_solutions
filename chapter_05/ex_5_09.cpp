@@ -1,5 +1,5 @@
 #include "std_lib_facilities.h"
-// Exercise 5.9
+// Exercise 5.8
 
 int main()
 {
@@ -20,16 +20,13 @@ int main()
         }
         if (inputs.size() < n) throw logic_error("not enough integers to sum.\n");
         
+        cout << "The sum of the first " << n << " numbers (";
         double sum = 0;
         for (int i = 0; i < n; i++) {
             sum += inputs[i];
-        }
-        int total = narrow_cast<int>(sum);
-        
-        cout << "The sum of the first " << n << " numbers (";
-        for (int i = 0; i < n; i++) {
             cout << inputs[i] << " ";
         }
+        int total = narrow_cast<int>(sum);
         cout << ") is " << total << ".\n";
     }
     catch (logic_error& e) {
