@@ -1,0 +1,49 @@
+/*
+ 2. Write a function, char* findx(const char* s, const char* x), that finds the first occurrence of the C-style string x in s. Do not use any standard library functions. Do not use subscripting; use the dereference operator * instead.
+ */
+
+#include "std_lib_facilities.h"
+#include <cmath>
+
+const char* findx(const char* c_str, const char* x)
+{
+    const char* x_copy = x;
+    while (*c_str) {
+        if (*c_str == *x_copy) {
+            const char* pc = c_str; // store to see if rest of string is a match
+            while (*c_str == *x_copy) {
+                if (!*x_copy) {
+                    return pc; // reached end of x, substring is a match!
+                }
+                ++c_str;
+                ++x_copy;
+            }
+            x_copy = x; // reset pointer
+        } else {
+            ++c_str; // moving on
+        }
+    }
+    return nullptr; // no match
+}
+
+int main()
+{
+    try {
+        char c_str[] = "crcredo";
+        char x[] = "credo";
+        const char* pmatch = findx(c_str, x);
+        if (pmatch) {
+            cout << "Matched string \"" << pmatch << "\" starting at address "<< &pmatch << '\n';
+        } else {
+            cout << "No match could be found.\n";
+        }
+    }
+    catch (exception& e) {
+        cerr << "exception: " << e.what() << endl;
+        return 1;
+    }
+    catch (...) {
+        cerr << "exception\n";
+        return 2;
+    }
+}

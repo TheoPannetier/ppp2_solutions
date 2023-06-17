@@ -1,0 +1,63 @@
+/*
+ Drill 7.2
+*/
+
+#include "std_lib_facilities.h"
+
+void swap_v(int a, int b)
+{
+    int temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+
+void swap_r(int& a, int& b)
+{
+    int temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+
+void swap_cr(const int& a, const int& b)
+{
+    // never compile: can't change value of const ref args
+    int temp;
+    temp = a;
+    //a = b;
+    //b = temp;
+}
+
+int main()
+{
+    int x = 7;
+    int y = 9;
+    swap_v(x, y);
+    cout << x << '\t' << y << '\n'; // 7 and 9, haven't swapped
+    swap_v(7, 9); // no swap outside function either
+    
+    swap_r(x, y); // good, swap performed
+    cout << x << '\t' << y << '\n';
+    // swap_r(7, 9); won't compile, no address in mem
+    
+    const int cx = 7;
+    const int cy = 9;
+    
+    swap_v(cx, cy); // compiles, no swap outside func
+    cout << cx << '\t' << cy << '\n';
+    // swap_r(cx, cy); // won't compile because would change arguments which are const
+    
+    double dx = 7.7;
+    double dy = 9.9;
+    
+    swap_v(dx, dy); // works? implicit conversion? won't change val outside function
+    cout << dx << '\t' << dy << '\n';
+    //swap_r(dx, dy); // won't compile, address is for a double not an int
+    //cout << dx << '\t' << dy << '\n';
+    
+    swap_v(7.7, 9.9);
+    // swap_r(7.7, 9.9); // no address to go to
+    
+    return 0;
+}

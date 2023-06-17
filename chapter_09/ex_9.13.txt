@@ -1,0 +1,83 @@
+/*
+ Chapter 09 - Exercise 13
+Design and implement a rational number class, Rational. A rational number has two parts: a numerator and a denominator, for example, 5/6 (five-sixths, also known as approximately .83333). Look up the definition if you need to. Provide assignment, addition, subtraction, multiplication, division, and equality operators. Also, provide a conversion to double. Why would people want to use a Rational class?
+ 
+ AFAICS the only reason one would want to use a Rational class is to guarantee that the numbers worked with are and remain rationals, and therefore the calculation are exact. Irrationals cannot measure with any length, so are always represented by an approximation.
+ Also rationals are countable, but I can't think of an application of this property.
+*/
+
+#include "std_lib_facilities.h"
+
+class Rational {
+public:
+    Rational(const int& num, const int& denom): m_num{num}, m_denom{denom} {
+        if (denom == 0) throw runtime_error("Denominator cannot be zero.");
+    }
+    int get_num() const { return m_num; }
+    int get_denom() const { return m_denom; }
+    double get_fraction() const {
+        return static_cast<double>(m_num) / static_cast<double>(m_denom);
+    };
+private:
+    int m_num;
+    int m_denom;
+};
+
+Rational operator+ (const Rational& x, const Rational& y)
+{
+    int num = x.get_num() * y.get_denom() + y.get_num() * x.get_denom();
+    int denom = x.get_denom() * y.get_denom();
+    return Rational(num, denom);
+}
+
+Rational operator- (const Rational& x, const Rational& y)
+{
+    int num = x.get_num() * y.get_denom() - y.get_num() * x.get_denom();
+    int denom = x.get_denom() * y.get_denom();
+    return Rational(num, denom);
+}
+
+Rational operator* (const Rational& x, const Rational& y)
+{
+    int num = x.get_num() * y.get_num();
+    int denom = x.get_denom() * y.get_denom();
+    return Rational(num, denom);
+}
+
+Rational operator/ (const Rational& x, const Rational& y)
+{
+    if (x.get_denom() == 0 || y.get_denom() == 0)
+        throw runtime_error("Cannot divide by zero");
+    int num = x.get_num() * y.get_denom();
+    int denom = y.get_denom() * x.get_denom();
+    return Rational(num, denom);
+}
+
+bool operator== (const Rational& x, const Rational& y)
+{
+    return x.get_fraction() == y.get_fraction();
+}
+
+ostream& operator<< (ostream& os, const Rational& x)
+{
+    return os << x.get_fraction();
+}
+
+int main()
+{
+    try {
+        Rational r1{5, 6};
+        Rational r2{2, 3};
+        Rational r3 = r1 + r2;
+        Rational r4 = r1 - r2;
+        Rational r5 = r1 * r2;
+        Rational r6 = r1 / r2;
+        
+        cout << r1 << '\n' << r2 << '\n' << r3 << '\n' << r4 << '\n' << r5 << '\n' << r6 << '\n';
+        cout << (r1 == Rational{15, 18}) << '\n';
+    }
+    catch (runtime_error& e) {
+        cout << "Runtime error: " << e.what();
+    }
+    return 0;
+}

@@ -1,0 +1,28 @@
+// Exercise 6.6
+
+// The birds fly but the fish swim
+
+// Sentence:
+//  Noun Verb // so that "birds fly" is still accepted
+//  Article Noun Verb
+//  Sentence Conjunction Sentence
+// Conjunction:
+//  "and"
+//  "or"
+//  "but"
+// Noun:
+//  "birds"
+//  "fish"
+//  "C++"
+// Verb:
+//  "rules"
+//  "fly"
+//  "swim"
+// Article:
+//  "the"
+
+// birds fly but the fish swim . OK
+// birds fly but the fish swim   not OK
+// birds fly but the fish swim.  not OK
+
+

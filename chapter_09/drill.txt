@@ -1,0 +1,363 @@
+/*
+ Chapter 09 - Drill
+ Version 9.4.1
+*/
+
+#include "std_lib_facilities.h"
+
+int last_day_of_month(int m)
+{
+    if (m  == 2)
+        return 28;
+    else
+        return (m % 2 == 1)? 31 : 30;
+}
+
+struct Date {
+    int y;  // year
+    int m;  // month in year
+    int d;  // day of month
+};
+
+void init_day(Date& dd, int y, int m, int d)
+{
+    if (y < 1800 | y > 2100) throw runtime_error("Year can only be between 1800 and 2100.\n");
+    if (m < 1 | m > 12) throw runtime_error("Month must be a value between 1 and 12.\n");
+    if (d < 1) throw runtime_error("Day must be a value above 0.\n");
+    if (d > last_day_of_month(m)) throw runtime_error("Day must not exceed nb of days in this month.\n");
+    dd = Date{y, m, d};
+}
+
+void add_day(Date& dd) // I refuse to solve this for more than a day at a time
+{
+    if (dd.d == last_day_of_month(dd.m))
+    {
+        if (dd.m == 12)
+        {
+            ++dd.y;
+            dd.m = 1;
+        } else {
+            ++dd.m;
+            dd.d = 1;
+        }
+    } else {
+        ++dd.d;
+    }
+}
+
+ostream& operator << (ostream& os, Date dd)
+{
+    return os << dd.y << ' ' << dd.m << ' ' << dd.d;
+}
+
+
+int main()
+{
+    try {
+        Date today{1978, 06, 25};
+        Date tomorrow = today;
+        add_day(tomorrow);
+        
+        cout << today << '\n'
+             << tomorrow << '\n';
+        
+        Date wrong_date;
+        // init_day(wrong_date, 30, 02, 1978);
+        init_day(wrong_date, 1978, 25, 06);
+        
+        /*
+        Date year_day_mistake{30, 02, 1978};
+        Date wrong_feb{1978, 02, 30}; // only 28 days in Feb
+        Date wrong_last_day{1978, 04, 31}; // only 30 days in April
+        Date wrong_month{1978, 25, 06};
+
+        */
+        
+    }
+    catch (runtime_error& e) {
+        cout << "Runtime error: " << e.what();
+    }
+    return 0;
+}
+
+/*
+ Chapter 09 - Drill
+ Version 9.4.2
+*/
+
+#include "std_lib_facilities.h"
+
+int last_day_of_month(int m)
+{
+    if (m  == 2)
+        return 28;
+    else
+        return (m % 2 == 1)? 31 : 30;
+}
+
+struct Date {
+    Date(int y, int m, int d);
+    int m_y;  // year
+    int m_m;  // month in year
+    int m_d;  // day of month
+    void add_day();
+};
+
+Date::Date(int y, int m, int d)
+{
+    if (y < 1800 | y > 2100) throw runtime_error("Year can only be between 1800 and 2100.\n");
+    if (m < 1 | m > 12) throw runtime_error("Month must be a value between 1 and 12.\n");
+    if (d < 1) throw runtime_error("Day must be a value above 0.\n");
+    if (d > last_day_of_month(m)) throw runtime_error("Day must not exceed nb of days in this month.\n");
+    m_y = y;
+    m_m = m;
+    m_d = d;
+}
+
+void Date::add_day() // I refuse to solve this for more than a day at a time
+{
+    if (m_d == last_day_of_month(m_m))
+    {
+        if (m_m == 12)
+        {
+            ++m_y;
+            m_m = 1;
+        } else {
+            ++m_m;
+            m_d = 1;
+        }
+    } else {
+        ++m_d;
+    }
+}
+
+ostream& operator << (ostream& os, Date dd)
+{
+    return os << dd.m_y << ' ' << dd.m_m << ' ' << dd.m_d;
+}
+
+
+int main()
+{
+    try {
+        Date today{1978, 06, 25};
+        Date tomorrow = today;
+        tomorrow.add_day();
+        
+        cout << today << '\n'
+             << tomorrow << '\n';
+        
+        Date wrong_date{1978, 25, 06};
+        
+        /*
+        Date year_day_mistake{30, 02, 1978};
+        Date wrong_feb{1978, 02, 30}; // only 28 days in Feb
+        Date wrong_last_day{1978, 04, 31}; // only 30 days in April
+        Date wrong_month{1978, 25, 06};
+
+        */
+        
+    }
+    catch (runtime_error& e) {
+        cout << "Runtime error: " << e.what();
+    }
+    return 0;
+}
+
+/*
+ Chapter 09 - Drill
+ Version 9.4.3
+*/
+
+#include "std_lib_facilities.h"
+
+int last_day_of_month(int m)
+{
+    if (m  == 2)
+        return 28;
+    else
+        return (m % 2 == 1)? 31 : 30;
+}
+
+class Date {
+    int m_y;  // year
+    int m_m;  // month in year
+    int m_d;  // day of month
+public:
+    Date(int y, int m, int d);
+    int year() { return m_y;}
+    int month() { return m_m;}
+    int day() { return m_d;}
+    void add_day();
+};
+
+Date::Date(int y, int m, int d)
+{
+    if (y < 1800 | y > 2100) throw runtime_error("Year can only be between 1800 and 2100.\n");
+    if (m < 1 | m > 12) throw runtime_error("Month must be a value between 1 and 12.\n");
+    if (d < 1) throw runtime_error("Day must be a value above 0.\n");
+    if (d > last_day_of_month(m)) throw runtime_error("Day must not exceed nb of days in this month.\n");
+    m_y = y;
+    m_m = m;
+    m_d = d;
+}
+
+void Date::add_day() // I refuse to solve this for more than a day at a time
+{
+    if (m_d == last_day_of_month(m_m))
+    {
+        if (m_m == 12)
+        {
+            ++m_y;
+            m_m = 1;
+        } else {
+            ++m_m;
+            m_d = 1;
+        }
+    } else {
+        ++m_d;
+    }
+}
+
+ostream& operator << (ostream& os, Date dd)
+{
+    return os << dd.year() << ' ' << dd.month() << ' ' << dd.day();
+}
+
+
+int main()
+{
+    try {
+        Date today{1978, 06, 25};
+        Date tomorrow = today;
+        tomorrow.add_day();
+        
+        cout << today << '\n'
+             << tomorrow << '\n';
+        
+        Date wrong_date{1978, 25, 06};
+        
+        /*
+        Date year_day_mistake{30, 02, 1978};
+        Date wrong_feb{1978, 02, 30}; // only 28 days in Feb
+        Date wrong_last_day{1978, 04, 31}; // only 30 days in April
+        Date wrong_month{1978, 25, 06};
+
+        */
+        
+    }
+    catch (runtime_error& e) {
+        cout << "Runtime error: " << e.what();
+    }
+    return 0;
+}
+
+/*
+ Chapter 09 - Drill
+ Version 9.7.1
+*/
+
+#include "std_lib_facilities.h"
+
+class Year {
+public:
+    Year(int y) : y{y} {
+        if (y < min || y > max) throw runtime_error("Year can only be between 1800 and 2200");
+    }
+    const int get_y() {return y;};
+private:
+    int y;
+    static const int min = 1800;
+    static const int max = 2200;
+};
+
+enum class Month {
+    jan = 1, feb, mar, apr, may, jun,
+    jul, aug, sep, oct, nov, dec
+};
+
+class Date {
+public:
+    Date(int y, Month m, int d);
+    Year year() { return m_y;}
+    Month month() { return m_m;}
+    int day() { return m_d;}
+    void add_day();
+private:
+    Year m_y;
+    Month m_m;
+    int m_d;
+};
+
+int last_day_of_month(Month m)
+{
+    if (m == Month::feb)
+        return 28;
+    else if (m == Month::jan || m == Month::mar || m == Month::may ||
+             m == Month::jul || m == Month::aug || m == Month::aug ||
+             m == Month::oct || m == Month::dec) {
+        return 31;
+        } else {
+            return 30;
+        }
+}
+
+Date::Date(int y, Month m, int d)
+: m_y{Year(y)}
+{
+    if (d < 1) throw runtime_error("Day must be a value above 0.\n");
+    if (d > last_day_of_month(m)) throw runtime_error("Day must not exceed nb of days in this month.\n");
+    m_m = m;
+    m_d = d;
+}
+
+void Date::add_day() // I refuse to solve this for more than a day at a time
+{
+    if (m_d == last_day_of_month(m_m))
+    {
+        if (m_m == Month::dec)
+        {
+            m_y = Year(m_y.get_y() + 1);
+            m_m = Month::jan;
+        } else {
+            m_m = Month(static_cast<int>(m_m) + 1);
+            m_d = 1;
+        }
+    } else {
+        ++m_d;
+    }
+}
+
+ostream& operator << (ostream& os, Date dd)
+{
+    return os << dd.year().get_y() << ' ' << static_cast<int>(dd.month()) << ' ' << dd.day();
+}
+
+
+int main()
+{
+    try {
+        Date today{1978, Month::jun, 25};
+        Date tomorrow = today;
+        tomorrow.add_day();
+        
+        cout << today << '\n'
+             << tomorrow << '\n';
+                
+        /*
+        Date year_day_mistake{30, 02, 1978};
+        Date wrong_feb{1978, 02, 30}; // only 28 days in Feb
+        Date wrong_last_day{1978, 04, 31}; // only 30 days in April
+        Date wrong_month{1978, 25, 06};
+
+        */
+        
+    }
+    catch (runtime_error& e) {
+        cout << "Runtime error: " << e.what();
+    }
+    return 0;
+}
+
+
+
